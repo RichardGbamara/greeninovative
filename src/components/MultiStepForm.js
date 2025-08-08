@@ -10,37 +10,12 @@ import ConsentStep from './steps/ConsentStep';
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    // Contact Info
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    emailAddress: '',
-    preferredContact: '',
-    
-    // Company Info
-    company: '',
-    role: '',
-    department: '',
-    branch: '',
-    
-    // Location Info
-    propertyLocation: '',
-    propertyOwnership: '',
-    propertyType: '',
-    
-    // Energy Usage Info
-    monthlyBill: '',
-    frequentOutages: '',
-    solarReasons: '',
-    solutionInterest: '',
-    
-    // Financing Info
-    paymentOption: '',
-    installationTimeline: '',
-    
-    // Consent Info
-    specialRequirements: '',
-    consent: false
+    firstName: '', lastName: '', phoneNumber: '', emailAddress: '', preferredContact: '',
+    company: '', role: '', department: '', branch: '',
+    propertyLocation: '', propertyOwnership: '', propertyType: '',
+    monthlyBill: '', frequentOutages: '', solarReasons: '', solutionInterest: '',
+    paymentOption: '', installationTimeline: '',
+    specialRequirements: '', consent: false
   });
 
   const steps = [
@@ -57,54 +32,55 @@ const MultiStepForm = () => {
   };
 
   const nextStep = () => {
-    if (currentStep < steps.length) {
-      setCurrentStep(currentStep + 1);
-    }
+    if (currentStep < steps.length) setCurrentStep(currentStep + 1);
   };
 
   const prevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
+    if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
   const getStepStatus = (stepId) => {
-    if (stepId < currentStep) return 'completed';
-    if (stepId === currentStep) return 'current';
-    return 'pending';
+    if (stepId < currentStep) return 'bg-green-500 text-white';
+    if (stepId === currentStep) return 'bg-blue-600 text-white';
+    return 'bg-gray-200 text-gray-600';
   };
 
   const CurrentStepComponent = steps[currentStep - 1].component;
 
   return (
-    <div className="form-container">
+    <div className="min-h-screen bg-gray-50 font-sans">
       {/* Navigation Header */}
-      <div className="form-header">
-        <Link to="/" className="back-link">
+      <div className="flex justify-between items-center px-6 py-4 bg-white border-t-4 border-blue-800 shadow-md fixed top-0 w-full z-50">
+        <Link to="/" className="text-gray-700 font-medium hover:text-orange-500 transition">
           ← Back to Home
         </Link>
-        <Link to="/" className="form-logo">
+        <Link to="/" className="flex items-center justify-center">
           <img 
             src="/images/Logo.png" 
             alt="The Greennovative Lab Logo" 
-            className="logo-icon"
+            className="w-14 h-14 object-contain"
           />
         </Link>
       </div>
       
-      <div className="container">
-        <div className="sidebar">
+      <div className="max-w-6xl mx-auto px-4 pt-28 grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Sidebar Steps */}
+        <div className="space-y-4">
           {steps.map((step) => (
             <div
               key={step.id}
-              className={`step-indicator ${getStepStatus(step.id)}`}
+              className={`flex items-center p-3 rounded-lg shadow-sm ${getStepStatus(step.id)}`}
             >
-              <div className="step-number">{step.id}</div>
-              <div className="step-title">{step.title}</div>
+              <div className="w-8 h-8 flex items-center justify-center rounded-full font-bold mr-3 bg-white text-black">
+                {step.id}
+              </div>
+              <div className="uppercase font-semibold">{step.title}</div>
             </div>
           ))}
         </div>
-        <div className="main-content">
+
+        {/* Main Content */}
+        <div className="md:col-span-3 bg-white rounded-lg shadow-lg p-6">
           <CurrentStepComponent
             formData={formData}
             updateFormData={updateFormData}
@@ -119,4 +95,4 @@ const MultiStepForm = () => {
   );
 };
 
-export default MultiStepForm; 
+export default MultiStepForm;
